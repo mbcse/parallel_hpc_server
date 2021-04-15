@@ -1,8 +1,3 @@
-# PumpkinLB Copyright (c) 2014-2015, 2017 Tim Savannah under GPLv3.
-# You should have received a copy of the license as LICENSE 
-#
-# See: https://github.com/kata198/PumpkinLB
-
 import multiprocessing
 import os
 import random
@@ -14,10 +9,10 @@ import time
 
 from .constants import DEFAULT_BUFFER_SIZE
 from .log import logmsg, logerr
-from .worker import PumpkinWorker
+from .worker import PynocoWorker
 
 
-class PumpkinListener(multiprocessing.Process):
+class PynocoListener(multiprocessing.Process):
     '''
         Class that listens on a local port and forwards requests to workers
     '''
@@ -68,26 +63,26 @@ class PumpkinListener(multiprocessing.Process):
             signal.signal(signal.SIGTERM, signal.SIG_DFL)
             sys.exit(0)
 
-        for pumpkinWorker in self.activeWorkers:
+        for pynocoWorker in self.activeWorkers:
             try:
-                pumpkinWorker.terminate()
-                os.kill(pumpkinWorker.pid, signal.SIGTERM)
+                pynocoWorker.terminate()
+                os.kill(pynocoWorker.pid, signal.SIGTERM)
             except:
                 pass
 
         time.sleep(1)
 
         remainingWorkers = []
-        for pumpkinWorker in self.activeWorkers:
-            pumpkinWorker.join(.03)
-            if pumpkinWorker.is_alive() is True:  # Still running
-                remainingWorkers.append(pumpkinWorker)
+        for pynocoWorker in self.activeWorkers:
+            pynocoWorker.join(.03)
+            if pynocoWorker.is_alive() is True:  # Still running
+                remainingWorkers.append(pynocoWorker)
 
         if len(remainingWorkers) > 0:
             # One last chance to complete, then we kill
             time.sleep(1)
-            for pumpkinWorker in remainingWorkers:
-                pumpkinWorker.join(.2)
+            for pynocoWorker in remainingWorkers:
+                pynocoWorker.join(.2)
 
         self.cleanupThread and self.cleanupThread.join(2)
 
@@ -127,7 +122,7 @@ class PumpkinListener(multiprocessing.Process):
                         worker.clientAddr, worker.workerAddr, worker.workerPort, nextWorkerInfo['addr'],
                         nextWorkerInfo['port']))
 
-                    nextWorker = PumpkinWorker(worker.clientSocket, worker.clientAddr, nextWorkerInfo['addr'],
+                    nextWorker = PynocoWorker(worker.clientSocket, worker.clientAddr, nextWorkerInfo['addr'],
                                                nextWorkerInfo['port'], self.bufferSize)
                     nextWorker.start()
                     self.activeWorkers.append(nextWorker)
@@ -148,7 +143,7 @@ class PumpkinListener(multiprocessing.Process):
 
                 # If on UNIX, bind to port even if connections are still in TIME_WAIT state
                 #  (from previous connections, which don't ever be served...)
-                # Happens when PumpkinLB Restarts.
+                # Happens when PynocoLB Restarts.
                 try:
                     listenSocket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
                 except:
@@ -194,7 +189,7 @@ class PumpkinListener(multiprocessing.Process):
 
                         raise  # Termination DID come from termination process, so abort.
                     logmsg('New request -> route request to %s:%d' % (workerInfo['addr'],workerInfo['port']))
-                    worker = PumpkinWorker(clientConnection, clientAddr, workerInfo['addr'], workerInfo['port'],
+                    worker = PynocoWorker(clientConnection, clientAddr, workerInfo['addr'], workerInfo['port'],
                                            self.bufferSize)
                     self.activeWorkers.append(worker)
                     worker.start()

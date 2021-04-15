@@ -1,8 +1,3 @@
-# PumpkinLB Copyright (c) 2014-2015, 2017 Tim Savannah under GPLv3.
-# You should have received a copy of the license as LICENSE 
-#
-# See: https://github.com/kata198/PumpkinLB
-
 import multiprocessing
 import select
 import signal
@@ -13,7 +8,7 @@ import time
 from .constants import GRACEFUL_SHUTDOWN_TIME, DEFAULT_BUFFER_SIZE
 from .log import logmsg, logerr
 
-class PumpkinWorker(multiprocessing.Process):
+class PynocoWorker(multiprocessing.Process):
     '''
         A class which handles the worker-side of processing a request (communicating between the back-end worker and the requesting client)
     '''

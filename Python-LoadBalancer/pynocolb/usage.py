@@ -1,18 +1,13 @@
-# PumpkinLB Copyright (c) 2014-2015, 2017 Tim Savannah under GPLv3.
-# You should have received a copy of the license as LICENSE 
-#
-# See: https://github.com/kata198/PumpkinLB
-
 import os
 import sys
 
-from . import __version__ as pumpkinlb_version
+from . import __version__ as pynocolb_version
 
 from .constants import DEFAULT_BUFFER_SIZE
 
 def printUsage(toStream=sys.stdout):
     toStream.write('''Usage: %s [config file]
-Starts Pumpkin Load Balancer using the given config file.
+Starts Pynoco Load Balancer using the given config file.
 
   Arguments:
 
@@ -55,7 +50,7 @@ Config file is broken up into sections, definable by [$SectionName], followed by
 
 
 def getVersionStr():
-    return 'PumpkinLB Version %s (c) 2014-2015 Timothy Savannah GPLv3' %(pumpkinlb_version,)
+    return 'PynocoLB Version %s (c) 2014-2015 Timothy Savannah GPLv3' %(pynocolb_version,)
 
 # vim : ts=4 sw=4 expandtab
 

@@ -1,8 +1,3 @@
-# PumpkinLB Copyright (c) 2014-2015, 2017 Tim Savannah under GPLv3.
-# You should have received a copy of the license as LICENSE 
-#
-# See: https://github.com/kata198/PumpkinLB
-
 import sys
 import socket
 try:
@@ -13,7 +8,7 @@ except:
 from .constants import DEFAULT_BUFFER_SIZE
 from .log import logmsg, logerr
 
-class PumpkinMapping(object):
+class PynocoMapping(object):
     '''
         Represents a mapping of a local listen to a series of workers
     '''
@@ -42,9 +37,9 @@ class PumpkinMapping(object):
 
         return removedWorker
 
-class PumpkinConfig(ConfigParser):
+class PynocoConfig(ConfigParser):
     '''
-        The class for managing Pumpkin's Config File
+        The class for managing Pynoco's Config File
     '''
 
     
@@ -121,7 +116,7 @@ class PumpkinConfig(ConfigParser):
     def _processMappings(self):
 
         if 'mappings' not in self._sections:
-            raise PumpkinConfigException('ERROR: Config is missing required "mappings" section.\n')
+            raise PynocoConfigException('ERROR: Config is missing required "mappings" section.\n')
 
         preResolveWorkers = self._options['pre_resolve_workers']
 
@@ -170,12 +165,12 @@ class PumpkinConfig(ConfigParser):
             keyName = "%s:%s" %(localAddr, addrPort)
             if keyName in mappings:
                 logerr('WARNING: Overriding existing mapping of %s with %s\n' %(addrPort, str(workerLst)))
-            mappings[addrPort] = PumpkinMapping(localAddr, localPort, workerLst)
+            mappings[addrPort] = PynocoMapping(localAddr, localPort, workerLst)
 
         self._mappings = mappings
 
 
-class PumpkinConfigException(Exception):
+class PynocoConfigException(Exception):
     pass
 
 # vim: ts=4 sw=4 expandtab

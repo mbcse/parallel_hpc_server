@@ -1,10 +1,3 @@
-#!/usr/bin/python
-#
-# PumpkinLB Copyright (c) 2014-2015, 2017 Tim Savannah under GPLv3.
-# You should have received a copy of the license as LICENSE 
-#
-# See: https://github.com/kata198/PumpkinLB
-
 import math
 import multiprocessing
 import os
@@ -14,13 +7,13 @@ import threading
 import time
 import traceback
 
-from pumpkinlb.config import PumpkinConfig, PumpkinConfigException
-from pumpkinlb.constants import GRACEFUL_SHUTDOWN_TIME
-from pumpkinlb.listener import PumpkinListener
-from pumpkinlb.log import logmsg, logerr
-from pumpkinlb.usage import printUsage, printConfigHelp, getVersionStr
+from pynocolb.config import PynocoConfig, PynocoConfigException
+from pynocolb.constants import GRACEFUL_SHUTDOWN_TIME
+from pynocolb.listener import PynocoListener
+from pynocolb.log import logmsg, logerr
+from pynocolb.usage import printUsage, printConfigHelp, getVersionStr
 from multiprocessing import Queue
-from pumpkinlb.httpServer import HttpServerReq
+from pynocolb.httpServer import HttpServerReq
 
 if __name__ == '__main__':
 
@@ -47,10 +40,10 @@ if __name__ == '__main__':
         printUsage(sys.stderr)
         sys.exit(1)
 
-    pumpkinConfig = PumpkinConfig(configFilename)
+    pynocoConfig = PynocoConfig(configFilename)
     try:
-        pumpkinConfig.parse()
-    except PumpkinConfigException as configError:
+        pynocoConfig.parse()
+    except PynocoConfigException as configError:
         sys.stderr.write(str(configError) + '\n\n\n')
         printConfigHelp()
         sys.exit(1)
@@ -59,10 +52,10 @@ if __name__ == '__main__':
         printConfigHelp(sys.stderr)
         sys.exit(1)
 
-    bufferSize = pumpkinConfig.getOptionValue('buffer_size')
+    bufferSize = pynocoConfig.getOptionValue('buffer_size')
     logmsg('Configured buffer size = %d bytes\n' % (bufferSize,))
 
-    mappings = pumpkinConfig.getMappings()
+    mappings = pynocoConfig.getMappings()
 
     algorithmQueue = Queue()
 
@@ -78,7 +71,7 @@ if __name__ == '__main__':
     for mappingAddr, mapping in mappings.items():
         logmsg('Starting up listener on %s:%d with mappings: %s\n' % (
         mapping.localAddr, mapping.localPort, str(mapping.workers)))
-        listener = PumpkinListener(mapping.localAddr, mapping.localPort, mapping.workers, bufferSize, algorithmQueue)
+        listener = PynocoListener(mapping.localAddr, mapping.localPort, mapping.workers, bufferSize, algorithmQueue)
         listener.start()
         listeners.append(listener)
 
