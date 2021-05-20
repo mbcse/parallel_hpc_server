@@ -1,4 +1,4 @@
-# Parallel_HPC_Server
+# Parallel_HPC_Server(Pynoco)
 
 ## Introduction
 The server manager manage the flow of information between the server and an endpoint device (PC, laptop, tablet or smartphone).
@@ -24,7 +24,7 @@ Need to quickly set up the load balancer
 - Redundancy
 - Flexibility
 
-## ALgorithms Used
+## Algorithms Used
 - Round-robin
 - Weighted
 
