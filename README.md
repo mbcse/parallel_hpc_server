@@ -7,10 +7,8 @@ Distributing high traffic sites among several servers
 The manager decides which servers can handle that traffic
 
 ## Problem Statement
-Need of parallel job to do its application level load balancing while ensuring that system load is balanced
-Need to distribute network traffic
-Change of destination decision algorithm during runtime is a challenging task
-Need to quickly set up the load balancer 
+In current tech world there is a need of parallel job to do its application level load balancing while ensuring that system load is balanced.
+Change of destination decision algorithm during runtime is a challenging task in a load balancer. we mostly have to stop the load balancer which reults in packet loss and considerable time lapse. 
 
 ## Solution
 - Separate Process Creation for each listener
